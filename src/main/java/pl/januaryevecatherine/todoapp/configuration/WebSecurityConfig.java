@@ -7,7 +7,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
+import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,18 +19,20 @@ import pl.januaryevecatherine.todoapp.repositories.UserRepository;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfig {
-    final UserRepository repo;
+    private final UserRepository repo;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/", "/images/**", "/webjars/**", "/login", "/new")
                         .permitAll()
+                        .requestMatchers("/tasks").hasAnyAuthority("user", "admin")
                         .anyRequest()
                         .authenticated()
                 )
-                .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
-                .logout(LogoutConfigurer::permitAll);
+                .csrf(CsrfConfigurer::disable)
+                .formLogin((formLogin) -> formLogin.defaultSuccessUrl("/tasks").permitAll())
+                .logout(LogoutConfigurer::permitAll)
         ;
 
         return http.build();
