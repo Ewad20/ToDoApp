@@ -1,11 +1,13 @@
 package pl.januaryevecatherine.todoapp.models;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 
 @Entity
+@Getter
 @NoArgsConstructor
 @Table(name = "task")
 public class Task {
@@ -27,11 +29,11 @@ public class Task {
     @Column(name = "status")
     private Long statusId;
 
-    public Task(String summary, String description, Long dateInMillis, Long userId) {
+    public Task(String summary, String description, Long startDateInMillis, Long endDateInMillis, Long userId) {
         this.summary = summary;
         this.description = description;
-        this.startDate = new Date(System.currentTimeMillis());
-        this.endDate = new Date(dateInMillis);
+        this.startDate = new Date(startDateInMillis);
+        this.endDate = new Date(endDateInMillis);
         this.userId = userId;
     }
 }

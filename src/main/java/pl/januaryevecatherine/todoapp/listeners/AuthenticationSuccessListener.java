@@ -14,7 +14,6 @@ public class AuthenticationSuccessListener implements ApplicationListener<Authen
     private final TaskRepository taskRepo;
     @Override
     public void onApplicationEvent(AuthenticationSuccessEvent event) {
-        System.out.println(event.getAuthentication().getName());
         taskRepo.findAllByUserId(userRepo.findByUsername(event.getAuthentication().getName()).orElseThrow().getId());
     }
 }

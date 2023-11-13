@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import pl.januaryevecatherine.todoapp.models.User;
+import pl.januaryevecatherine.todoapp.models.UserRole;
 import pl.januaryevecatherine.todoapp.repositories.UserRepository;
 
 @Controller
@@ -24,7 +25,7 @@ public class UserController {
 
     @PostMapping("/addUser")
     public String addUser(@RequestParam String username, @RequestParam String password) {
-    repo.save(new User(username, password));
+    repo.save(new User(username, password, UserRole.user));
     return "redirect:/";
 }
 }
