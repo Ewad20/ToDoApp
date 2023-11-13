@@ -7,7 +7,6 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -26,14 +25,15 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/", "/images/**", "/webjars/**", "/login", "/addUser")
-                        .permitAll() 
+                        .permitAll()
                         .requestMatchers("/new").hasAuthority("admin")
+                        .requestMatchers("/tasks").hasAnyAuthority("user", "admin")
                         .anyRequest()
                         .authenticated()
                 )
                 .csrf(CsrfConfigurer::disable)
-                .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
-                .logout(LogoutConfigurer::permitAll);
+                .formLogin((formLogin) -> formLogin.defaultSuccessUrl("/tasks").permitAll())
+                .logout(LogoutConfigurer::permitAll)
         ;
 
         return http.build();
