@@ -19,13 +19,14 @@ import pl.januaryevecatherine.todoapp.repositories.UserRepository;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfig {
-    private final UserRepository repo;
+    final UserRepository repo;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/", "/images/**", "/webjars/**", "/login", "/new")
+                        .requestMatchers("/", "/images/**", "/webjars/**", "/login", "/addUser")
                         .permitAll()
+                        .requestMatchers("/new").hasAuthority("admin")
                         .requestMatchers("/tasks").hasAnyAuthority("user", "admin")
                         .anyRequest()
                         .authenticated()
