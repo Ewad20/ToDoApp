@@ -8,7 +8,6 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
-import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,7 +23,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/", "/images/**", "/webjars/**", "/login", "/addUser")
+                        .requestMatchers("/", "/images/**", "/webjars/**", "/login", "/addUser", "/credits")
                         .permitAll()
                         .requestMatchers("/new").hasAuthority("admin")
                         .requestMatchers("/tasks").hasAnyAuthority("user", "admin")
@@ -33,7 +32,7 @@ public class WebSecurityConfig {
                 )
                 .csrf(CsrfConfigurer::disable)
                 .formLogin((formLogin) -> formLogin.defaultSuccessUrl("/tasks").permitAll())
-                .logout(LogoutConfigurer::permitAll)
+                .logout(logout -> logout.logoutSuccessUrl("/").permitAll())
         ;
 
         return http.build();

@@ -4,10 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import pl.januaryevecatherine.todoapp.models.Task;
 import pl.januaryevecatherine.todoapp.repositories.TaskRepository;
 import pl.januaryevecatherine.todoapp.repositories.UserRepository;
+
+import java.sql.Date;
 
 @Controller
 @RequiredArgsConstructor
@@ -46,8 +51,9 @@ public class TasksController {
     }
 
     @PostMapping("/updateTask")
-    public String updateTask(@ModelAttribute Task task) {
-        taskRepo.updateTask(task.getId(), task.getSummary(), task.getDescription(), task.getStartDate(), task.getEndDate());
+    public String updateTask(@RequestParam String id, @RequestParam String summary, @RequestParam String description, @RequestParam String endDate) {
+        System.out.println(id + " " + summary + " " + description + " " + endDate);
+        taskRepo.updateTask(Long.valueOf(id), summary, description, Date.valueOf(endDate));
         return "redirect:/tasks";
     }
 }

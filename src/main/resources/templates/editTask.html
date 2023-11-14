@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>ToDoApp</title>
-    <link rel="stylesheet" href="webjars/bootstrap/5.3.2/css/bootstrap.min.css" type="text/css">
-    <script src="webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="../webjars/bootstrap/5.3.2/css/bootstrap.min.css" type="text/css">
+    <script src="../webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
 </head>
 <body class="bg-dark">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -34,11 +34,11 @@
     </div>
 </nav>
 <div class="container mt-4" th:if="${task != null}">
-    <form th:action="@{/updateTask}" th:object="${task}" method="post">
-        <input type="hidden" th:field="*{id}" />
+    <form action="/updateTask" th:object="${task}" method="post">
+        <input type="hidden" th:field="*{id}"/>
         <div class="mb-3">
             <label for="summary" class="form-label">Summary</label>
-            <input type="text" class="form-control" id="summary" th:field="*{summary}" />
+            <input type="text" class="form-control" id="summary" th:field="*{summary}"/>
         </div>
         <div class="mb-3">
             <label for="description" class="form-label">Description</label>
@@ -46,14 +46,16 @@
         </div>
         <div class="mb-3">
             <label for="startDate" class="form-label">Start Date</label>
-            <input type="text" class="form-control" id="startDate" th:value="${#dates.format(task.startDate, 'yyyy-MM-dd')}" readonly />
+            <input type="text" class="form-control" id="startDate"
+                   th:value="${#dates.format(task.startDate, 'yyyy-MM-dd')}" readonly/>
         </div>
         <div class="mb-3">
             <label for="endDate" class="form-label">End Date</label>
-            <input type="text" class="form-control" id="endDate" th:field="*{endDate}" />
+            <input type="text" class="form-control" id="endDate" th:field="*{endDate}"/>
         </div>
         <button type="submit" class="btn btn-dark">Update Task</button>
     </form>
+    <a href="/tasks" class="btn btn-dark">Cancel</a>
 </div>
 <footer class="bg-dark text-center text-white fixed-bottom">
     <p>2023© JanuaryEvaCatherine</p>

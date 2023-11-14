@@ -44,7 +44,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/">
+        <a class="navbar-brand" href="#">
             <img alt="logo" class="d-inline-block align-content-center" width="60px" height="60px"
                  src="/images/jd.png">
             To do app
@@ -58,16 +58,26 @@
                 <li class="nav-item active">
                     <a href="/" class="nav-link">Home</a>
                 </li>
-                <li class="nav-item active">
-                    <a href="/login" class="nav-link">Login</a>
+                <li th:if="${#authorization.expression('isAuthenticated()')}" class="nav-item active">
+                    <a href="/tasks" class="nav-link">Tasks</a>
+                </li>
+                <li th:if="${#authorization.expression('isAuthenticated()')}" class="nav-item active">
+                    <a href="/logout" class="nav-link">Logout</a>
                 </li>
                 <li class="nav-item active">
                     <a href="/credits" class="nav-link">Credits</a>
                 </li>
             </ul>
+            <a th:unless="${#authorization.expression('isAuthenticated()')}" href="/login" class="btn btn-dark ms-auto">
+                Login
+            </a>
+            <a th:if="${#authorization.expression('isAuthenticated()')}" href="/createTask" class="btn btn-dark ms-auto">
+                Add new task
+            </a>
         </div>
     </div>
 </nav>
+
 
 <div class="to-do-app">ToDoApp</div>
 
